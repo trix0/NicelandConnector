@@ -35,6 +35,14 @@ fun main() {
 
         println(response.body!!.string())
     }
+    while (true){
+        try {
+        Thread.sleep(2000)
+        }
+        catch (e:Exception){
+
+        }
+    }
 }
 
 private fun trustedCertificatesInputStream(): InputStream {
@@ -59,12 +67,9 @@ class CombinedSocketFactory(
 ) : SocketFactory() {
     private var socket:Socket? = null
     override fun createSocket(): Socket {
-        val socket=sslSocketFactory.createSocket(host, port)
-        val outputStream: OutputStream = socket.getOutputStream()
-        val byteArray = byteArrayOf(255.toByte(), 255.toByte(), 255.toByte(), 0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
-        outputStream.write(byteArray)
-        outputStream.flush()
-        return socket
+        socket=sslSocketFactory.createSocket(host, port)
+        enableSocket()
+        return socket!!
     }
 
     override fun createSocket(host: String?, port: Int): Socket {
